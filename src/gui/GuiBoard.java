@@ -234,6 +234,8 @@ public class GuiBoard extends JFrame {
         //Firstly check if the game is over and write to wins and losses if it is.
         if (player.getHealth() <= 0 || computer.getHealth() <= 0){
             writeWinsAndLosses(player.getHealth() > 0);
+            System.out.print("Victory: " + Boolean.toString((player.getHealth()>0)));
+
             System.exit(0);
         }
 
