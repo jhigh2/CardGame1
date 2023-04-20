@@ -86,7 +86,7 @@ public class GuiBoard extends JFrame {
         GridBagConstraints gbc_lblFileIOLoses = new GridBagConstraints();
         gbc_lblFileIOLoses.insets = new Insets(0, 0, 5, 5);
         gbc_lblFileIOLoses.gridx = 0;
-        gbc_lblFileIOLoses.gridy = 1;
+        gbc_lblFileIOLoses.gridy = 5;
         return gbc_lblFileIOLoses;
     }
 
@@ -94,7 +94,7 @@ public class GuiBoard extends JFrame {
         GridBagConstraints gbc_lblFileIOWins = new GridBagConstraints();
         gbc_lblFileIOWins.insets = new Insets(0, 0, 5, 5);
         gbc_lblFileIOWins.gridx = 0;
-        gbc_lblFileIOWins.gridy = 0;
+        gbc_lblFileIOWins.gridy = 4;
         return gbc_lblFileIOWins;
     }
 
@@ -291,7 +291,7 @@ public class GuiBoard extends JFrame {
         GridBagConstraints gbc_lblOpponentHealth = new GridBagConstraints();
         gbc_lblOpponentHealth.insets = new Insets(0, 0, 5, 0);
         gbc_lblOpponentHealth.gridx = 3;
-        gbc_lblOpponentHealth.gridy = 2;
+        gbc_lblOpponentHealth.gridy = 0;
         return gbc_lblOpponentHealth;
     }
 
