@@ -221,9 +221,14 @@ public class GuiBoard extends JFrame {
         //Firstly check if the game is over and write to wins and losses if it is.
         if (player.getHealth() <= 0 || computer.getHealth() <= 0){
             writeWinsAndLosses(player.getHealth() > 0);
+            PlayAgainFrame playAgain = new PlayAgainFrame();
+            if (player.getHealth() > 0){
+                playAgain.lblPlayAgain.setText("You Won! Play Again?");
+            } else {
+                playAgain.lblPlayAgain.setText("You Lost! Play Again?");
+            }
             resetGuiBoard();
             dispose();
-            PlayAgainFrame playAgain = new PlayAgainFrame();
             playAgain.setVisible(true);
         } else {
             //Update the board method
@@ -233,9 +238,10 @@ public class GuiBoard extends JFrame {
                     if (i < 4) {
                         ((JToggleButton) BattleAreaPanel.cardMap.get(i)).setText(card.toString() + "</html>");
                     } else {
-                        ((JLabel) BattleAreaPanel.cardMap.get(i)).setText(card.toString() + "</html>");
+                        JLabel cardLabel = (JLabel) BattleAreaPanel.cardMap.get(i);
+                        cardLabel.setText(card.toString() + "</html>");
                     }
-                } else {
+                } else if (BattleAreaPanel.cardMap.get(i) != null){
                     if (i < 4) {
                         ((JToggleButton) BattleAreaPanel.cardMap.get(i)).setText("Empty Slot");
                         //If a card dies, make it so player can place another card there.
