@@ -94,7 +94,7 @@ public class Board {
      * Attacks the enemy card at the location opposite the card provided as argument.
      * @param attackingCard The attacking card.
      */
-    public void attackEnemy(Card attackingCard){
+    private void attackEnemy(Card attackingCard){
         //Skip null cards
         if (attackingCard == null) return;
 
@@ -169,5 +169,31 @@ public class Board {
                 attackEnemy(getCardAtLocation(i));
             }
         }
+    }
+    
+    /**
+     * Resets all slots on the board and player stats for a new game to start.
+     */
+    public void resetBoard() {
+    	player.setHealth(10);
+    	computer.setHealth(10);
+    	player.setMana(5);
+    	computer.setMana(5);
+    	player.setNumberOfTurns(0);
+    	computer.setNumberOfTurns(0);
+        player.initializeRandomDeck();
+        computer.initializeRandomDeck();
+    	
+    	for (int i = 0; i < player.getHand().size(); i++) {
+    		player.getHand().set(i, null);
+    	}
+    	
+    	for (int i = 0; i < computer.getHand().size(); i++) {
+    		computer.getHand().set(i, null);
+    	}
+    	
+    	for (int i = 0; i < 8; i++) {
+    		removeCardAtLocation(i);
+    	}
     }
 }

@@ -66,16 +66,16 @@ public class HandPanel extends JPanel {
 	 */
 	public JButton create_Card() {
 		JButton btnNewButton = new JButton();
-		Card card = GuiBoard.player.drawCard();
+		Card card = board.getPlayer().drawCard();
 		placementChosen = false;
-		btnNewButton.setText(card.toString() + " | cost: " + card.getMana());
+		btnNewButton.setText(card.toString() + "<br>Mana Cost: " + card.getMana() + "</html>");
 		btnNewButton.setPreferredSize(new Dimension(150, 150)); // set's the button to be a reasonable size
 		cardCounter++;
 		listHand.add(btnNewButton); // Adds a new JButton (Card) to the Hand List
 		add(btnNewButton); // Add that same new Jbutton (Card) to the JPanel
 		btnNewButton.addActionListener(new ActionListener() { // Once the card is chosen
 			public void actionPerformed(ActionEvent e) {
-				if (GuiBoard.player.getMana() >= card.getMana()) {
+				if (board.getPlayer().getMana() >= card.getMana()) {
 					handToBattleArea(0); // Play the card to the Battle Area index 0
 					handToBattleArea(1);
 					handToBattleArea(2);
@@ -83,7 +83,7 @@ public class HandPanel extends JPanel {
 					if (placementChosen == true) { // the placement on the board has to be chosen if the card is going to disappear
 						btnNewButton.setVisible(false);; // Hides the card so it no longer appears in players hand
 						listHand.remove(btnNewButton);
-						GuiBoard.lblMana.setText("Mana: " + GuiBoard.player.getMana());
+						GuiBoard.lblMana.setText("Mana: " + board.getPlayer().getMana());
 					}
 				}
 			}
@@ -94,8 +94,8 @@ public class HandPanel extends JPanel {
 			private void handToBattleArea(int areaIndex) {
 				if (hasPlayed == false) {
 					if (BattleAreaPanel.battleAreaButtons.get(areaIndex).isSelected() && listBattleAreaSlotAvailable.get(areaIndex) == true ) {
+						deselectAllBattleAreaButtons(areaIndex);
 						BattleAreaPanel.battleAreaButtons.get(areaIndex).setText(card.toString());
-						//hasPlayed = true;
 						BattleAreaPanel.battleAreaButtons.get(areaIndex).setSelected(false);
 						listBattleAreaSlotAvailable.set(areaIndex, false);
 						//GuiBoard.player.setMana(GuiBoard.player.getMana()-card.getMana());
@@ -106,6 +106,18 @@ public class HandPanel extends JPanel {
 			}
 		});
 		return btnNewButton;
+	}
+
+	/**
+	 * Deselects the other JToggle buttons
+	 * (Removes a bug we encountered where the player could place multiple cards at once and have negative mana)
+	 * @param areaIndex the selected index
+	 */
+	private void deselectAllBattleAreaButtons(int areaIndex) {
+		for (int i = 0; i < 4; i++){
+			if (BattleAreaPanel.battleAreaButtons.get(i) != BattleAreaPanel.battleAreaButtons.get(areaIndex))
+				BattleAreaPanel.battleAreaButtons.get(i).setSelected(false);
+		}
 	}
 
 	/**

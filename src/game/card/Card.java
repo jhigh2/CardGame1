@@ -71,6 +71,6 @@ public abstract class Card {
      */
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "\nHealth: " + getHealth() + "\nDamage: " + getPower();
+        return "<html>" + this.getClass().getSimpleName() + "<br>Health: " + getHealth() + "<br>Damage: " + getPower();
     }
 }

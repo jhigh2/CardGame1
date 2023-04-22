@@ -45,7 +45,8 @@ public class Player {
     /**
      * Initializes a deck of 10 cards.
      */
-    private void initializeRandomDeck() {
+    public void initializeRandomDeck() {
+        deck.clear();
         List<Card> uniqueCards = new ArrayList<>();
         Collections.addAll(uniqueCards, new Bear(alliance), new Wolf(alliance), new Squirrel(alliance), new Cat(alliance), new Crow(alliance), new Shark(alliance),
         new Owl(alliance), new Bobcat(alliance), new Hound(alliance), new Alligator(alliance));

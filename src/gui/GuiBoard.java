@@ -16,7 +16,7 @@ import java.util.Scanner;
 @SuppressWarnings("serial")
 public class GuiBoard extends JFrame {
 
-    public static final Board board = new Board();
+    public final static Board board = new Board();
     public final static Player player = board.getPlayer();
     public final static Computer computer = board.getComputer();
     public static boolean hasDrawn = false;
@@ -28,20 +28,21 @@ public class GuiBoard extends JFrame {
     public static  JLabel lblPlayerHealth = new JLabel();
     public static JLabel lblOpponentHealth = new JLabel();
     public static JLabel lblMana;
+    public static JLabel lblWinsAndLosses;
 
     /**
      * Create the frame.
      */
     public GuiBoard() {
-        readWinsAndLosses();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(200, 200, 1000, 750);
+        setBounds(200, 200, 1400, 750);
         setLocationRelativeTo(null);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(15, 50, 15, 15));
         setContentPane(contentPane);
         GridBagLayout gbl_contentPane = create_guiBoardLayout();
         contentPane.setLayout(gbl_contentPane);
+        
         lblTurnCount = create_turnCount();
         GridBagConstraints gbc_lblTurnCount = create_TurnCountConstraints();
         contentPane.add(lblTurnCount, gbc_lblTurnCount);
@@ -58,48 +59,34 @@ public class GuiBoard extends JFrame {
         BattleAreaPanel panel_battleArea = create_battleAreaPanel();
         GridBagConstraints gbc_panel_BattleArea = create_battleAreaPanelConstraints();
         contentPane.add(panel_battleArea, gbc_panel_BattleArea);
+        
         JButton btnEndTurn = create_endTurnBtn();
         GridBagConstraints gbc_btnEndTurn = create_endTurnBtnConstraints();
         contentPane.add(btnEndTurn, gbc_btnEndTurn);
+        
         panel_hand = create_handPanel();
         GridBagConstraints gbc_panel_Hand = create_handPanelConstraints();
         contentPane.add(panel_hand, gbc_panel_Hand);
+        
         JButton btnDraw = create_drawBtn();
         GridBagConstraints gbc_btnDraw = create_drawBtnConstraints();
         contentPane.add(btnDraw, gbc_btnDraw);
+        
         lblMana = create_manaCount();
         GridBagConstraints gbc_lblMana = create_manaCountConstraints();
         contentPane.add(lblMana, gbc_lblMana);
-        JLabel lblFileIOWins = getLblFileIOWins(String.valueOf(wins));
-        GridBagConstraints gbc_lblFileIOWins = newLblFileIOWinsConstraints();
-        contentPane.add(lblFileIOWins, gbc_lblFileIOWins);
-        JLabel lblFileIOLoses = newLblFileIoLosses(String.valueOf(losses));
-        GridBagConstraints gbc_lblFileIOLoses = newLblFileIOLossesConstraints();
-        contentPane.add(lblFileIOLoses, gbc_lblFileIOLoses);
+        
+        lblWinsAndLosses = new JLabel(readWinsAndLosses());;
+        GridBagConstraints gbc_lblFileIOWins = lblWinsAndLossesConstraints();
+        contentPane.add(lblWinsAndLosses, gbc_lblFileIOWins);
     }
 
-    private static JLabel newLblFileIoLosses(String losses) {
-        return new JLabel("Losses: " + losses + "\r\n");
-    }
-
-    private static GridBagConstraints newLblFileIOLossesConstraints() {
-        GridBagConstraints gbc_lblFileIOLoses = new GridBagConstraints();
-        gbc_lblFileIOLoses.insets = new Insets(0, 0, 5, 5);
-        gbc_lblFileIOLoses.gridx = 0;
-        gbc_lblFileIOLoses.gridy = 1;
-        return gbc_lblFileIOLoses;
-    }
-
-    private static GridBagConstraints newLblFileIOWinsConstraints() {
+    private static GridBagConstraints lblWinsAndLossesConstraints() {
         GridBagConstraints gbc_lblFileIOWins = new GridBagConstraints();
         gbc_lblFileIOWins.insets = new Insets(0, 0, 5, 5);
         gbc_lblFileIOWins.gridx = 0;
         gbc_lblFileIOWins.gridy = 0;
         return gbc_lblFileIOWins;
-    }
-
-    private static JLabel getLblFileIOWins(String wins) {
-        return new JLabel("Wins: " + wins);
     }
 
     /**
@@ -230,40 +217,51 @@ public class GuiBoard extends JFrame {
     /**
      * Updates all components on the board.
      */
-    private void updateBoard() {
+    public void updateBoard() {
         //Firstly check if the game is over and write to wins and losses if it is.
         if (player.getHealth() <= 0 || computer.getHealth() <= 0){
             writeWinsAndLosses(player.getHealth() > 0);
-            System.exit(0);
-        }
-
-        //Update the board method
-        for (int i = 0; i < 8; i++){
-            Card card = board.getCardAtLocation(i);
-            if (card != null) {
-                if (i < 4) {
-                    JToggleButton playerButton = (JToggleButton) BattleAreaPanel.cardMap.get(i);
-                    playerButton.setText(card.toString());
+            resetGuiBoard();
+            dispose();
+            PlayAgainFrame playAgain = new PlayAgainFrame();
+            playAgain.setVisible(true);
+        } else {
+            //Update the board method
+            for (int i = 0; i < 8; i++) {
+                Card card = board.getCardAtLocation(i);
+                if (card != null && BattleAreaPanel.cardMap.get(i) != null) {
+                    if (i < 4) {
+                        ((JToggleButton) BattleAreaPanel.cardMap.get(i)).setText(card.toString() + "</html>");
+                    } else {
+                        ((JLabel) BattleAreaPanel.cardMap.get(i)).setText(card.toString() + "</html>");
+                    }
                 } else {
-                    JLabel computerLabel = (JLabel) BattleAreaPanel.cardMap.get(i);
-                    computerLabel.setText(card.toString());
-                }
-            } else {
-                if (i < 4) {
-                    JToggleButton playerButton = (JToggleButton) BattleAreaPanel.cardMap.get(i);
-                    playerButton.setText("Empty Slot");
-                    HandPanel.listBattleAreaSlotAvailable.set(i, true);
-                } else {
-                    JLabel computerLabel = (JLabel) BattleAreaPanel.cardMap.get(i);
-                    computerLabel.setText("Empty Slot");
+                    if (i < 4) {
+                        ((JToggleButton) BattleAreaPanel.cardMap.get(i)).setText("Empty Slot");
+                        //If a card dies, make it so player can place another card there.
+                        HandPanel.listBattleAreaSlotAvailable.set(i, true);
+                    } else {
+                        ((JLabel) BattleAreaPanel.cardMap.get(i)).setText("Empty Slot");
+                    }
                 }
             }
+            lblOpponentHealth.setText("Computer Health: " + computer.getHealth());
+            lblPlayerHealth.setText("Player Health: " + player.getHealth());
         }
-        lblOpponentHealth.setText("Computer Health: " + computer.getHealth());
-        lblPlayerHealth.setText("Player Health: " + player.getHealth());
     }
 
     /**
+     * Resets the guiBoard.
+     */
+    private void resetGuiBoard() {
+		board.resetBoard();
+        for (int i = 4; i <= 7; i++){
+            BattleAreaPanel.cardMap.remove(i);
+        }
+		BattleAreaPanel.computerInPlayList.clear();
+	}
+
+	/**
      * sets the layout constraints of the "End Turn" button.
      *
      * @return
@@ -391,17 +389,22 @@ public class GuiBoard extends JFrame {
      * The file only contains one line as following:
      * Wins: {wins}, Losses: {losses};
      */
-    private void readWinsAndLosses() {
+    private String readWinsAndLosses() {
         String filePath = "src/gui/Resources/WinsAndLosses.txt";
         String winsAndLosses = "";
         try (Scanner reader = new Scanner(new File(filePath))){
-            while(reader.hasNextLine())
-                winsAndLosses = reader.nextLine();
+            winsAndLosses = reader.nextLine();
             String[] strings = winsAndLosses.split(":");
             wins = Integer.parseInt(strings[1].substring(1, strings[1].indexOf(",")));
             losses = Integer.parseInt(strings[2].substring(1));
         } catch (FileNotFoundException e) {
             System.out.println("Error: could not find " + filePath);
         }
+        return winsAndLosses;
     }
+
+	public Board getBoard() {
+		// TODO Auto-generated method stub
+		return board;
+	}
 }
