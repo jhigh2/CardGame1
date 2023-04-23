@@ -25,7 +25,7 @@ public class GuiBoard extends JFrame {
     private JPanel contentPane;
     private HandPanel panel_hand;
     private JLabel lblTurnCount;
-    public static  JLabel lblPlayerHealth = new JLabel();
+    public static JLabel lblPlayerHealth = new JLabel();
     public static JLabel lblOpponentHealth = new JLabel();
     public static JLabel lblMana;
     public static JLabel lblWinsAndLosses;
@@ -42,7 +42,7 @@ public class GuiBoard extends JFrame {
         setContentPane(contentPane);
         GridBagLayout gbl_contentPane = create_guiBoardLayout();
         contentPane.setLayout(gbl_contentPane);
-        
+
         lblTurnCount = create_turnCount();
         GridBagConstraints gbc_lblTurnCount = create_TurnCountConstraints();
         contentPane.add(lblTurnCount, gbc_lblTurnCount);
@@ -59,23 +59,23 @@ public class GuiBoard extends JFrame {
         BattleAreaPanel panel_battleArea = create_battleAreaPanel();
         GridBagConstraints gbc_panel_BattleArea = create_battleAreaPanelConstraints();
         contentPane.add(panel_battleArea, gbc_panel_BattleArea);
-        
+
         JButton btnEndTurn = create_endTurnBtn();
         GridBagConstraints gbc_btnEndTurn = create_endTurnBtnConstraints();
         contentPane.add(btnEndTurn, gbc_btnEndTurn);
-        
+
         panel_hand = create_handPanel();
         GridBagConstraints gbc_panel_Hand = create_handPanelConstraints();
         contentPane.add(panel_hand, gbc_panel_Hand);
-        
+
         JButton btnDraw = create_drawBtn();
         GridBagConstraints gbc_btnDraw = create_drawBtnConstraints();
         contentPane.add(btnDraw, gbc_btnDraw);
-        
+
         lblMana = create_manaCount();
         GridBagConstraints gbc_lblMana = create_manaCountConstraints();
         contentPane.add(lblMana, gbc_lblMana);
-        
+
         lblWinsAndLosses = new JLabel(readWinsAndLosses());;
         GridBagConstraints gbc_lblFileIOWins = lblWinsAndLossesConstraints();
         contentPane.add(lblWinsAndLosses, gbc_lblFileIOWins);
@@ -236,10 +236,10 @@ public class GuiBoard extends JFrame {
                 Card card = board.getCardAtLocation(i);
                 if (card != null && BattleAreaPanel.cardMap.get(i) != null) {
                     if (i < 4) {
-                        ((JToggleButton) BattleAreaPanel.cardMap.get(i)).setText(card.toString() + "</html>");
+                        ((JToggleButton) BattleAreaPanel.cardMap.get(i)).setText(card + "</html>");
                     } else {
                         JLabel cardLabel = (JLabel) BattleAreaPanel.cardMap.get(i);
-                        cardLabel.setText(card.toString() + "</html>");
+                        cardLabel.setText(card + "</html>");
                     }
                 } else if (BattleAreaPanel.cardMap.get(i) != null){
                     if (i < 4) {
@@ -247,7 +247,8 @@ public class GuiBoard extends JFrame {
                         //If a card dies, make it so player can place another card there.
                         HandPanel.listBattleAreaSlotAvailable.set(i, true);
                     } else {
-                        ((JLabel) BattleAreaPanel.cardMap.get(i)).setText("Empty Slot");
+                        JLabel cardLabel = (JLabel) BattleAreaPanel.cardMap.get(i);
+                        if (cardLabel != null) cardLabel.setText("Empty Slot");
                     }
                 }
             }
@@ -259,15 +260,33 @@ public class GuiBoard extends JFrame {
     /**
      * Resets the guiBoard.
      */
-    private void resetGuiBoard() {
-		board.resetBoard();
-        for (int i = 4; i <= 7; i++){
-            BattleAreaPanel.cardMap.remove(i);
-        }
-		BattleAreaPanel.computerInPlayList.clear();
-	}
+    public void resetGuiBoard() {
+        player.setHealth(10);
+        computer.setHealth(10);
+        player.setMana(5);
+        computer.setMana(5);
+        player.setNumberOfTurns(0);
+        computer.setNumberOfTurns(0);
+        player.initializeRandomDeck();
+        computer.initializeRandomDeck();
 
-	/**
+        for (int i = 0; i < player.getHand().size(); i++) {
+            player.getHand().set(i, null);
+        }
+
+        for (int i = 0; i < computer.getHand().size(); i++) {
+            computer.getHand().set(i, null);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            board.removeCardAtLocation(i);
+        }
+        BattleAreaPanel.computerInPlayList.clear();
+        lblOpponentHealth.setText("Computer Health: " + computer.getHealth());
+        lblPlayerHealth.setText("Player Health: " + player.getHealth());
+    }
+
+    /**
      * sets the layout constraints of the "End Turn" button.
      *
      * @return
@@ -409,8 +428,8 @@ public class GuiBoard extends JFrame {
         return winsAndLosses;
     }
 
-	public Board getBoard() {
-		// TODO Auto-generated method stub
-		return board;
-	}
+    public Board getBoard() {
+        // TODO Auto-generated method stub
+        return board;
+    }
 }

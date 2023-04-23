@@ -1,1 +1,1 @@
-Wins: 25, Losses: 50
+Wins: 0, Losses: 0
