@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * A JPanel representing the battle area.
+ * @author Joel High
+ * @author John Freeman
+ */
 public class BattleAreaPanel extends JPanel {
 
     public static List<JToggleButton> battleAreaButtons = new ArrayList<>();

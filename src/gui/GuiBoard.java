@@ -13,6 +13,11 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * The main JFrame of the game
+ * @author Joel High
+ * @author John Freeman
+ */
 @SuppressWarnings("serial")
 public class GuiBoard extends JFrame {
 

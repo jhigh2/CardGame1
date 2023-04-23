@@ -4,6 +4,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ * A JFrame with buttons to open the rules or to start the game.
+ * @author Joel High
+ * @author John Freeman
+ */
 public class StartFrame extends JFrame {
 
     /**

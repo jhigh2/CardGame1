@@ -9,6 +9,8 @@ import java.util.Random;
 
 /**
  * A Computer opponent that the player will play against.
+ * @author Joel High
+ * @author John Freeman
  */
 public class Computer extends Player {
     private final Random rand = new Random();

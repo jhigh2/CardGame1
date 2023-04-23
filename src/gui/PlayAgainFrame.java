@@ -12,6 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 
+/**
+ * A JFrame with buttons prompting the user if they would like to play again
+ * @author Joel High
+ * @author John Freeman
+ */
 public class PlayAgainFrame extends JFrame {
 
 	public JLabel lblPlayAgain;

@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * A class representing a player.
+ * A class representing a Player
+ * @author Joel High
+ * @author John Freeman
  */
 public class Player {
     private final List<Card> deck = new ArrayList<>();

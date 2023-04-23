@@ -13,6 +13,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * A class representing the player's hand.
+ * @author Joel High
+ * @author John Freeman
+ */
 @SuppressWarnings("serial")
 public class HandPanel extends JPanel {
     public static List<Boolean> listBattleAreaSlotAvailable = new ArrayList<>(Arrays.asList(true, true, true, true));

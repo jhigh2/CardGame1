@@ -5,6 +5,11 @@ import game.Computer;
 import game.Player;
 import game.Board;
 
+/**
+ * A class representing a Card
+ * @author Joel High
+ * @author John Freeman
+ */
 public abstract class Card {
     private int power;
     private int health;

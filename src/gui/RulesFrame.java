@@ -13,6 +13,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 
+/**
+ * A JFrame explaining the rules of the game
+ * @author Joel High
+ * @author John Freeman
+ */
 public class RulesFrame extends JFrame {
 
 	private JPanel contentPane;

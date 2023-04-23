@@ -12,6 +12,8 @@ import static game.Alliance.PLAYER;
  * The locations start at the bottom left and go from left to right like so:
  * <li>4  5  6   7</li>
  * <li>0  1  2   3</li>
+ * @author Joel High
+ * @author John Freeman
  */
 public class Board {
     private final Card[] cardLocations = new Card[8];
@@ -101,7 +103,7 @@ public class Board {
      *
      * @param attackingCard The attacking card.
      */
-    private void attackEnemy(Card attackingCard) {
+    public void attackEnemy(Card attackingCard) {
         //Skip null cards
         if (attackingCard == null) return;
         Card enemyCard = getEnemyCard(attackingCard);
